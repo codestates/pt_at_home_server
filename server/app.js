@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 const users = require('./routes/users');
 const main = require('./routes/main');
@@ -19,7 +20,7 @@ models.sequelize.sync().then( () => {
 })
 
 // view engine setup
-
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,6 +30,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users', users);
 app.use('/main', main);
 app.use('/myroutine', myroutine);
+
+app.get('/', (req, res)=>{
+  res.send('Pt at home')
+})
 
 
 app.listen(8080);

@@ -3,6 +3,6 @@ module.exports = {
     deleteRoutine : require('./delete-routine'),
     myWorkout : require('./myworkout'),
     removeWorkout : require('./remove-workout'),
-    saveWorkout : require('./sava-workout'),
+    saveWorkout : require('./save-workout'),
     myRoutine : require('./myroutine') 
 }
