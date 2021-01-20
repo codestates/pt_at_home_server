@@ -3,5 +3,6 @@ module.exports = {
     signin : require('./signin'),
     signout : require('./signout'),
     signup : require('./signup'),
-    update : require('./update')
+    update : require('./update'),
+    token : require('./token')
 }
