@@ -11,6 +11,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsToMany(models.users,{
+        through : models.user_workout,
+        foreignKey : 'workoutId'
+      })
+
+      this.belongsToMany(models.routines,{
+        through : models.routine_workout,
+        foreignKey : 'workoutId'
+      })
+
+      this.belongsToMany(models.parts,{
+        through : models.workout_part,
+        foreignKey : 'workoutId'
+      })
+
+      this.hasMany(models.image,{
+        foreignKey : 'id',
+      })
     }
   };
   workouts.init({
