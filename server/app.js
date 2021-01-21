@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 const users = require('./routes/users');
 const main = require('./routes/main');
@@ -21,7 +22,7 @@ const models = require("./models/index.js");
 
 // view engine setup
 
-console.log("메인")
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
