@@ -16,10 +16,10 @@ module.exports = {
     dialect: "mysql"
   },
   production: {
-    username: "root",
+    username: "savemehome",
     password: process.env.DATABASE_SECRET,
     database: "ptathome",
-    host: "127.0.0.1",
+    host: "databaseptathome.caigvf4pbegf.ap-northeast-2.rds.amazonaws.com",
     dialect: "mysql"
   }
 }

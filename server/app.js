@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 const users = require('./routes/users');
 const main = require('./routes/main');
@@ -12,16 +13,15 @@ const app = express();
 
 const models = require("./models/index.js");
 
-// models.sequelize.sync().then( () => {
-//   console.log(" DB 연결 성공");
-// }).catch(err => {
-//   console.log("연결 실패");
-//   console.log(err);
-// })
+models.sequelize.sync().then( () => {
+  console.log(" DB 연결 성공");
+}).catch(err => {
+  console.log("연결 실패");
+  console.log(err);
+})
 
-// view engine setup
 
-console.log("메인")
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
