@@ -4,6 +4,8 @@ const ACCESS_SECRET = process.env.ACCESS_SECRET
 const REFRESH_SECRET = process.env.REFRESH_SECRET
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const moment = require('moment');
+require('moment-timezone')
 
 module.exports = async (req, res) => {
     const userInfo = await users.findOne({ where: { email: req.body.email } });
@@ -18,6 +20,7 @@ module.exports = async (req, res) => {
             }, ACCESS_SECRET, {
                 expiresIn: '1h'
             });
+
             const refreshToken = jwt.sign({
                 id: userInfo.dataValues.id,
                 userName: userInfo.dataValues.userName,
@@ -25,8 +28,11 @@ module.exports = async (req, res) => {
             }, REFRESH_SECRET, {
                 expiresIn: '3h'
             });
-
+            
             await users.update({ accessToken, refreshToken }, { where: { email: req.body.email } })
+
+            const accessVerify = jwt.verify(accessToken, ACCESS_SECRET);
+            const date = new Date(parseInt(accessVerify.exp) * 1000).toLocaleString("ko-KR", {timeZone: "Asia/Seoul"})
 
             res.status(200)
                 .cookie({ refreshToken }, { httpOnly: true, withCredencail: true })
@@ -35,7 +41,8 @@ module.exports = async (req, res) => {
                         id: userInfo.dataValues.id,
                         userName: userInfo.dataValues.userName,
                         email: userInfo.dataValues.email,
-                        token: accessToken
+                        token: accessToken,
+                        exp : date
                     },
                     message: 'signin success'
                 })
