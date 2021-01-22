@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const session = require('express-session')
 
 const users = require('./routes/users');
 const main = require('./routes/main');
@@ -20,8 +21,28 @@ models.sequelize.sync().then( () => {
   console.log(err);
 })
 
+app.use(
+    session ({
+      secret : process.env.SESSION_SECRET,
+      cookie : {
+        path : '/',
+        sameSite : 'none',
+        secure : true,
+        httpOnly : true,
+        maxAge : 60000 * 60,
+      }
+    })
+)
 
-app.use(cors());
+
+app.use(cors({
+  origin : [
+    'http://localhost:8080',
+    'https://savemehomt.com'
+  ],
+  methods : ['GET', 'POST'],
+  credentials : true
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
