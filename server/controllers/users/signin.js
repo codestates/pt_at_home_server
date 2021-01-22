@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     const checkPassword = await bcrypt.compare(req.body.password, userInfo.password)
 
     if (checkPassword) {
-        if(req.body.email === userInfo.email){
+        if (req.body.email === userInfo.email) {
             const accessToken = jwt.sign({
                 id: userInfo.dataValues.id,
                 userName: userInfo.dataValues.userName,
@@ -25,15 +25,18 @@ module.exports = async (req, res) => {
             }, REFRESH_SECRET, {
                 expiresIn: '3h'
             });
+
             await users.update({ accessToken, refreshToken }, { where: { email: req.body.email } })
+
             res.status(200)
-                .cookie({ refreshToken }, { httpOnly: true })
+                .cookie({ refreshToken }, { httpOnly: true, withCredencail: true })
                 .send({
                     data: {
                         id: userInfo.dataValues.id,
                         userName: userInfo.dataValues.userName,
-                        email: userInfo.dataValues.email
-                    }, accessToken,
+                        email: userInfo.dataValues.email,
+                        token: accessToken
+                    },
                     message: 'signin success'
                 })
         }
