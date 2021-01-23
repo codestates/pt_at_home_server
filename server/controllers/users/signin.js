@@ -8,46 +8,56 @@ const moment = require('moment');
 require('moment-timezone')
 
 module.exports = async (req, res) => {
-    const userInfo = await users.findOne({ where: { email: req.body.email } });
-    const checkPassword = await bcrypt.compare(req.body.password, userInfo.password)
-
-    if (checkPassword) {
-        if (req.body.email === userInfo.email) {
-            const accessToken = jwt.sign({
-                id: userInfo.dataValues.id,
-                userName: userInfo.dataValues.userName,
-                email: userInfo.dataValues.email
-            }, ACCESS_SECRET, {
-                expiresIn: '1h'
-            });
-
-            const refreshToken = jwt.sign({
-                id: userInfo.dataValues.id,
-                userName: userInfo.dataValues.userName,
-                email: userInfo.dataValues.email
-            }, REFRESH_SECRET, {
-                expiresIn: '3h'
-            });
-            
-            await users.update({ accessToken, refreshToken }, { where: { email: req.body.email } })
-
-            const accessVerify = jwt.verify(accessToken, ACCESS_SECRET);
-            const date = new Date(parseInt(accessVerify.exp) * 1000).toLocaleString("ko-KR", {timeZone: "Asia/Seoul"})
-
-            res.status(200)
-                .cookie({ refreshToken }, { httpOnly: true, withCredencail: true })
-                .send({
-                    data: {
-                        id: userInfo.dataValues.id,
-                        userName: userInfo.dataValues.userName,
-                        email: userInfo.dataValues.email,
-                        token: accessToken,
-                        exp : date
-                    },
-                    message: 'signin success'
-                })
-        }
-    } else {
+    if (!req.headers.authorization) { 
         res.status(400).send({ message: 'user not exist' })
+    }
+    else {
+        const userInfo = await users.findOne({ where: { email: req.body.email } });
+        const checkPassword = await bcrypt.compare(req.body.password, userInfo.password)
+
+        if (checkPassword) {
+            if (req.body.email === userInfo.email) {
+
+                const accessToken = jwt.sign({
+                    id: userInfo.dataValues.id,
+                    userName: userInfo.dataValues.userName,
+                    email: userInfo.dataValues.email
+                }, ACCESS_SECRET, {
+                    expiresIn: '1m'
+                });
+
+                const refreshToken = jwt.sign({
+                    id: userInfo.dataValues.id,
+                    userName: userInfo.dataValues.userName,
+                    email: userInfo.dataValues.email
+                }, REFRESH_SECRET, {
+                    expiresIn: '2m'
+                });
+
+                await users.update({ accessToken, refreshToken }, { where: { email: req.body.email } })
+
+                const accessVerify = jwt.verify(accessToken, ACCESS_SECRET);
+                const date = new Date(parseInt(accessVerify.exp) * 1000).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
+
+                res.status(200)
+                    .cookie('refreshToken', refreshToken, { httpOnly: true })
+                    .send({
+                        data: {
+                            id: userInfo.dataValues.id,
+                            userName: userInfo.dataValues.userName,
+                            email: userInfo.dataValues.email,
+                            auth: {
+                                token: accessToken,
+                                expDate: date
+                            },
+                            createdAt: userInfo.dataValues.createdAt,
+                            updatedAt: userInfo.dataValues.updatedAt
+                        },
+                        message: 'signin success'
+                    })
+            }
+        } else {
+            res.status(400).send({ message: 'user not exist' })
+        }
     }
 }
