@@ -5,7 +5,7 @@ const REFRESH_SECRET = process.env.REFRESH_SECRET
 
 module.exports = async (req, res) => {
     if (!req.headers.authorization) {
-        res.status(400).send({ message: 'accessToken 없음' })
+        res.status(401).send({ message: 'token expired' })
     } else {
         let token = req.headers.authorization.split(" ")[1];
         try {
