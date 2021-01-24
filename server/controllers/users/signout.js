@@ -5,7 +5,7 @@ const REFRESH_SECRET = process.env.REFRESH_SECRET
 
 module.exports = async (req, res) => {
     if (!req.headers.authorization) {
-        res.status(401).send({ message: 'token expired' })
+        res.status(400).send({ message: 'accessToken not found' })
     } else {
         let token = req.headers.authorization.split(" ")[1];
         try {
@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
                 .cookie('accessToken', null, { httpOnly: true })
                 .send({ message: 'signout success' })
         } catch (err) {
-            res.status(400).send({ message: 'server error' })
+            res.status(500).send({ message: 'server error' })
         }
     }
 }
