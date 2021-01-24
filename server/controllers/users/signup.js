@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const accessKey = process.env.ACCESS_SECRET;
 const refreshKey = process.env.REFRESH_SECRET;
+require('dotenv').config();
+
 
 module.exports = async(req,res) =>{
     const { email , password, userName} = req.body 
@@ -16,12 +18,12 @@ module.exports = async(req,res) =>{
     
             const accessToken = sign(userInfo, accessKey, 
             {
-                expiresIn : '15s'
+                expiresIn : '1h'
             })
             
             const refreshToken = sign(userInfo, refreshKey,
             {
-                expiresIn : '7d'
+                expiresIn : '5h'
             })
             const hashPassword = await bcrypt.hash(password, saltRounds);
             const result = await users.create(
@@ -33,6 +35,18 @@ module.exports = async(req,res) =>{
                     refreshToken : refreshToken
                 }
             );
+
+            const accessVerify = verify(accessToken, accessKey);
+            const date = new Date(parseInt(accessVerify.exp) * 1000).toLocaleString("ko-KR", {timeZone: "Asia/Seoul"})
+
+            result.dataValues.auth = {
+                token : result.accessToken,
+                expDate : date
+            }
+
+            delete result.dataValues.refreshToken
+            delete result.dataValues.accessToken
+            
             return res.cookie('refreshToken', refreshToken, 
                 {
                     httpOnly : true,
@@ -49,13 +63,4 @@ module.exports = async(req,res) =>{
     catch(err){
         return res.status(500).send({message : 'server error'});
     }
-    // const { email , password, userName} = req.body 
-
-    // const test =await bcrypt.hash(password, saltRounds) //hash password 
-
-    // const databaseHash = await users.create({email : email, password : test, userName : userName});
-
-    // const test2 = await bcrypt.compare(password, databaseHash.password);
-
-    // console.log(test2);
 }
