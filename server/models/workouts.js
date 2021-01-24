@@ -33,9 +33,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   workouts.init({
     title: DataTypes.STRING,
-    desc: DataTypes.STRING,
-    image: DataTypes.STRING,
-    set: DataTypes.INTEGER,
+    instruction: DataTypes.TEXT,
+    setCount: DataTypes.INTEGER,
     count: DataTypes.INTEGER,
     breakTime: DataTypes.INTEGER,
     calrorie: DataTypes.INTEGER,
