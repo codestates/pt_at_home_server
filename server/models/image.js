@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   image.init({
-    workoutId: DataTypes.INTEGER
+    workoutId: DataTypes.INTEGER,
+    url: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'image',
