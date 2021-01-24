@@ -3,23 +3,20 @@ const jwt = require('jsonwebtoken')
 const ACCESS_SECRET = process.env.ACCESS_SECRET
 const REFRESH_SECRET = process.env.REFRESH_SECRET
 const bcrypt = require('bcrypt')
-// const { where } = require('sequelize/types')
 const saltRounds = 10
 
 module.exports = async (req, res) => {
     const { userName, password } = req.body
 
     if (!req.headers.authorization) {
-        res.status(400).send({ message: 'update filed' })
+        res.status(400).send({ message: 'invalid accessToken' })
     } else {
-        // const authorization = req.headers.authorization;
-        // const token = authorization.split(" ")[2];
         const token = req.headers.authorization.split(" ")[2];
 
         try {
             const tokenVerify = jwt.verify(token, ACCESS_SECRET);
-            // console.log("tokenVerify: ", tokenVerify)
-            if (userName && password) { // 둘 다 수정
+
+            if (userName && password) {
                 const hash = await bcrypt.hash(req.body.password, saltRounds);
                 await users.update({ userName, password: hash }, { where: { email: tokenVerify.email } })
                 res.status(200).send({
@@ -36,6 +33,8 @@ module.exports = async (req, res) => {
                 res.status(200).send({
                     message: 'password update success'
                 })
+            } else {
+                res.status(400).send({ message: 'update failed' })
             }
         } catch (err) {
             console.log(err)
