@@ -42,17 +42,17 @@ module.exports = async (req, res) => {
         userName : login,
         email : email
     },accessKey, {
-        expiresIn : '1m'
+        expiresIn : '1h'
     })
 
     const refreshToken = sign({
         userName : login,
         email : email
     },refreshKey, {
-        expiresIn : '3m'
+        expiresIn : '3h'
     })
 
-    const accessVerify = verify(accessToken, ACCESS_SECRET);
+    const accessVerify = verify(accessToken, accessKey);
     const date = new Date(parseInt(accessVerify.exp) * 1000).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
 
     return res.cookie('refreshToken', refreshToken, { httpOnly: true }).send({
