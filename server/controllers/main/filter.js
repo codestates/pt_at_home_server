@@ -1,20 +1,12 @@
 const axios = require('axios');
+const { compareSync } = require('bcrypt');
 
 module.exports = async(req,res) =>{
 
-    const { category , part, tool} = req.body
-    
-    const data = await axios.get('http://localhost:8080/main', 
-    {header : {withCredentials : true}});
+    const { category , part, tool, path} = req.body
 
-    // console.log(data.data.data[0].parts); // 해당 운동부위 출력
-
-    // console.log(data.data.data); //여기서 모든 리스트 출력 가능
-
-    const workoutList = data.data.data;
-
-    function getfilterData(data){
-        const filtering = workoutList.filter(workout=>{
+    function getfilterData(data,list){
+        const filtering = list.filter(workout=>{
             let filter = 1;
 
             if(part){
@@ -40,20 +32,20 @@ module.exports = async(req,res) =>{
         return res.send({data : filtering, message : 'ok'})
     }
 
-    try{
+    function filter(list){
         if(category){
             if(category === '맨몸'){
-                getfilterData('맨몸');
+                getfilterData('맨몸',list);
             }else if(category === '기구'){
-                getfilterData('기구');
+                getfilterData('기구',list);
             }else{
-                const filtering = workoutList.filter(workout => {
+                const filtering = list.filter(workout => {
                     return workout.category === '스트레칭'
                 })
                 res.send({data : filtering, message : 'ok'});
             }
         }else{
-            const filtering = workoutList.filter(workout => {
+            const filtering = list.filter(workout => {
                 let filter = 1;
     
                 if(part){
@@ -77,14 +69,37 @@ module.exports = async(req,res) =>{
                 return true;
             })
             if(filtering.length === 0){
-                return res.send({message : '일치하는 검색 결과가 없습니다.'})
+                return res.send({message : 'none data'})
             }
             return res.send({data : filtering, message : 'ok'})
         }
-    } catch(err){
-        return res.status(500).send({message : 'server error'})
     }
 
+    if(path === 'dashboard'){  
+        try{
+            const dashboard = await axios.get('http://localhost:8080/main', 
+            {header : {withCredentials : true}});
+        
+            const workoutList = dashboard.data.data;  
+            filter(workoutList);
+        } catch(err){
+            return res.status(500).send({message : 'server error'})
+        }
+    }else if(path === 'routine'){
+        try{
+            const accessToken = req.headers.authorization
+            const myWorkouts = await axios.get('http://localhost:8080/myroutine/myworkout',
+            {headers : {withCredentials : true,
+                'Content-Type':'application/json',
+                'Authorization': accessToken,
+            }});
+
+            const workoutList = myWorkouts.data.data;
+            filter(workoutList);
+        } catch(err) {
+            return res.status(500).send({message : 'server error'})
+        }
+    }
     // 카테고리가 있으면 무조건 카테고리를 기준으로 분류 
 
     // 맨손 운동 전체이면서 도구 운동을 선택할 수 없다.
