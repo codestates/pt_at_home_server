@@ -1,11 +1,11 @@
 const { users } = require('../../models');
-const refreshKey = process.env.REFRESH_SECRET;
+const accessKey = process.env.ACCESS_SECRET;
 const { verify } = require('jsonwebtoken');
 
 module.exports = async(req,res) =>{
     const { email } = req.body 
     const userInfoInToken = req.headers.authorization.substr(7);
-    const checkToken = verify(userInfoInToken, refreshKey);
+    const checkToken = verify(userInfoInToken, accessKey);
     const checkEmail =await users.findOne({where : {email : email}});
 
     try {
