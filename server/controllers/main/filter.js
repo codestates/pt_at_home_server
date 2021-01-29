@@ -69,7 +69,7 @@ module.exports = async(req,res) =>{
                 return true;
             })
             if(filtering.length === 0){
-                return res.send({message : 'none data'})
+                return res.send({data : list , message : 'ok'})
             }
             return res.send({data : filtering, message : 'ok'})
         }
