@@ -1,6 +1,4 @@
 const axios = require('axios');
-const workouts = require('../../models/workouts');
-
 module.exports = async(req,res) =>{
 
     const { keyword } = req.body;
