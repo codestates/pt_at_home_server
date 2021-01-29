@@ -23,7 +23,7 @@ module.exports = async(req,res) =>{
             
             const refreshToken = sign(userInfo, refreshKey,
             {
-                expiresIn : '5h'
+                expiresIn : '3h'
             })
             const hashPassword = await bcrypt.hash(password, saltRounds);
             const result = await users.create(
