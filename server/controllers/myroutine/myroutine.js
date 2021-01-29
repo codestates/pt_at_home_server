@@ -1,47 +1,86 @@
 const jwt = require('jsonwebtoken')
 const ACCESS_SECRET = process.env.ACCESS_SECRET
-const REFRESH_SECRET = process.env.REFRESH_SECRET
 const axios = require('axios')
 const { users, workouts, routines, routine_workout } = require('../../models');
 
-
 module.exports = async (req, res) => {
-    try {
-        const token = req.headers.authorization.substr(7);
-        const accessVerify = jwt.verify(token, REFRESH_SECRET)
 
-        const my = await users.findOne({
-            where: {
-                email: accessVerify.email
+        const judgeMyOrRecommend = async(email) => {
+            const userInfo = await users.findOne({
+                where: {
+                    email: email
+                }
+            })
+    
+            const myRoutine = await routines.findAll({
+                attributes : [ 'id', 'title' ],
+                where : { userId : userInfo.id },
+                include : {
+                    attributes : ['id'],
+                    model : workouts
+                }
+            });
+    
+            const data = await axios.get('http://localhost:8080/main', 
+            {header : {withCredentials : true}});
+            
+            const workoutList = data.data.data;
+    
+            const routineList = myRoutine.map(routine=>{
+                return routine.workouts.map(workout=>{
+                    const myWorkouts = new Array;
+                    workoutList.forEach(list=>{
+                        if(workout.id === list.id){
+                            delete list.setCount
+                            delete list.count
+                            delete list.breakTime
+                            list.mySetCount = workout.routine_workout.mySetCount
+                            list.myCount = workout.routine_workout.myCount
+                            list.myBreakTime = workout.routine_workout.myBreakTime
+                            myWorkouts.push(list);
+                        }
+                    })
+                    return myWorkouts
+                })
+            })
+    
+            const result = routineList.map((el,index)=>{
+                const addTitle = { 
+                    routineId : myRoutine[index].id,
+                    title : myRoutine[index].title,
+                    workout: el
+                }
+                return addTitle
+            })
+    
+            return result.length === 0 ? 
+                res.send({ message : 'none data'}) : 
+                res.send({ data : result , message : 'ok'});
+        }
+
+
+        if(!req.headers.authorization){
+            try{
+                console.log('ho')
+
+                judgeMyOrRecommend(0);
+
+            }catch(err){
+                return res.status(500).send({message : 'server error'})
             }
-        })
+        }else{
+            try{
+                const token = req.headers.authorization.substr(7);
+                const accessVerify = jwt.verify(token, ACCESS_SECRET);
+                const email = accessVerify.email
+    
+                judgeMyOrRecommend(email);
 
-        const myRoutine = await routines.findAll({
-            where: { userId: my.id },
-            include: [{
-                model: workouts
-            }],
-            attributes: ['id', 'title']
-        })
-
-        const workoutAxios = await axios.get('http://localhost:8080/main')
-        const workoutList = workoutAxios.data.data;
-        console.log(workoutList.id);
-
-        let arr = []
-
-        // for(let i=0; i<myRoutine.workouts.length; i++){
-        //     arr.push(myRoutine[i].routines)
-        // }
-        // console.log(arr)
+            }catch(err){
+                return res.status(500).send({message : 'server error'})
+            }
+        }
 
 
-        res.send({ data: myRoutine })
 
-    } catch (err) {
-        console.log(err)
-        res.status(500).send({ message: 'server error' })
-    }
 }
-
-

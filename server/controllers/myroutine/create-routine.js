@@ -1,5 +1,5 @@
 const { users, routines, routine_workout } = require('../../models');
-const refreshKey = process.env.REFRESH_SECRET;
+const accessKey = process.env.ACCESS_SECRET;
 const { verify } = require('jsonwebtoken');
 const axios = require('axios');
 
@@ -7,8 +7,8 @@ module.exports = async(req,res) =>{
 
     try {
         const userInfoInToken = req.headers.authorization.substr(7);
-        const checkToken = verify(userInfoInToken, refreshKey);
-        const { title , workout} = req.body
+        const checkToken = verify(userInfoInToken, accessKey);
+        const { title , workouts} = req.body
 
         const userInfo = await users.findOne({
             attributes : ['id'],
@@ -19,7 +19,7 @@ module.exports = async(req,res) =>{
             userId : userInfo.id, title : title
         }) //routines table에 userId, title 저장
 
-        workout.map(async(el)=>{
+        workouts.map(async(el)=>{
             await routine_workout.create({
                 routineId : routine.id, workoutId : el.id,
                 mySetCount : el.mySetCount, myCount : el.myCount,
@@ -34,7 +34,7 @@ module.exports = async(req,res) =>{
 
         let resultData = new Array;
         workoutList.forEach(workoutData =>{
-            workout.forEach(el=>{
+            workouts.forEach(el=>{
                 if(el.id === workoutData.id){
                     delete workoutData.count
                     delete workoutData.setCount

@@ -1,13 +1,12 @@
-const { users, workouts, parts, user_workout } = require('../../models')
+const { users, user_workout } = require('../../models')
 const jwt = require('jsonwebtoken')
 const ACCESS_SECRET = process.env.ACCESS_SECRET
-const REFRESH_SECRET = process.env.REFRESH_SECRET
 const axios = require('axios')
 
 module.exports = async (req, res) => {
     try {
         const token = req.headers.authorization.substr(7);
-        const accessVerify = jwt.verify(token, REFRESH_SECRET)
+        const accessVerify = jwt.verify(token, ACCESS_SECRET)
 
         const userInfo = await users.findOne({
             attributes: ['id'],
