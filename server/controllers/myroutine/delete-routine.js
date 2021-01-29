@@ -3,7 +3,6 @@ const { routines, routine_workout } = require('../../models');
 module.exports = async (req, res) => {
     try {
         const { routineId } = req.body
-        console.log(routineId)
         await routines.destroy({ where : {id : routineId}});
 
         await routine_workout.destroy({ where : {routineId : routineId}});

@@ -61,7 +61,6 @@ module.exports = async (req, res) => {
 
         if(!req.headers.authorization){
             try{
-                console.log('ho')
 
                 judgeMyOrRecommend(0);
 
