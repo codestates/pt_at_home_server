@@ -11,7 +11,7 @@ module.exports = async(req,res) =>{
     try {
         if(checkEmail.email === checkToken.email){
             await users.destroy({ where : {email : email}});
-            res.send({message : 'resign success'});
+            res.clearCookie('refreshToken').send({message : 'resign success'});
         }else{
             return res.status(400).send({message : 'cannot verified'});
         }
