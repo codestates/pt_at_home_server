@@ -9,7 +9,7 @@ router.get('/signout', usersController.signout);
 router.post('/signin', usersController.signin);
 router.post('/signup', usersController.signup);
 router.post('/token', usersController.token);
-router.get('/kakao', usersController.kakao);
+router.post('/kakao', usersController.kakao);
 router.post('/google', usersController.google);
 router.post('/github', usersController.github);
 
