@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
                     userName: userInfo.dataValues.userName,
                     email: userInfo.dataValues.email
                 }, ACCESS_SECRET, {
-                    expiresIn: '1m'
+                    expiresIn: '1h'
                 });
 
                 const refreshToken = jwt.sign({
@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
                     userName: userInfo.dataValues.userName,
                     email: userInfo.dataValues.email
                 }, REFRESH_SECRET, {
-                    expiresIn: '3m'
+                    expiresIn: '3h'
                 });
 
                 await users.update({ accessToken, refreshToken }, { where: { email: req.body.email } })

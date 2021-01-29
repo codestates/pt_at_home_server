@@ -1,6 +1,7 @@
 const { users, routines, routine_workout } = require('../../models');
 const accessKey = process.env.ACCESS_SECRET;
 const { verify } = require('jsonwebtoken');
+const { URL } = require('../../controllers/url');
 const axios = require('axios');
 
 module.exports = async(req,res) =>{
@@ -27,7 +28,7 @@ module.exports = async(req,res) =>{
             })
         })//routine_workout table에 my값 저장
 
-        const data = await axios.get('http://localhost:8080/main', 
+        const data = await axios.get(`${URL}/main`, 
         {header : {withCredentials : true}});
 
         const workoutList = data.data.data;

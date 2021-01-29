@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken')
 const ACCESS_SECRET = process.env.ACCESS_SECRET
 const axios = require('axios')
-const { users, workouts, routines, routine_workout } = require('../../models');
+const { users, workouts, routines } = require('../../models');
+const {URL}= require('../../controllers/url');
 
 module.exports = async (req, res) => {
 
@@ -21,7 +22,7 @@ module.exports = async (req, res) => {
                 }
             });
     
-            const data = await axios.get('http://localhost:8080/main', 
+            const data = await axios.get(`${URL}/main`, 
             {header : {withCredentials : true}});
             
             const workoutList = data.data.data;

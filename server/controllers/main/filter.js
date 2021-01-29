@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { compareSync } = require('bcrypt');
+const {URL}= require('../../controllers/url');
 
 module.exports = async(req,res) =>{
 
@@ -77,7 +78,7 @@ module.exports = async(req,res) =>{
 
     if(path === 'dashboard'){  
         try{
-            const dashboard = await axios.get('http://localhost:8080/main', 
+            const dashboard = await axios.get(`${URL}/main`, 
             {header : {withCredentials : true}});
         
             const workoutList = dashboard.data.data;  
@@ -88,7 +89,7 @@ module.exports = async(req,res) =>{
     }else if(path === 'routine'){
         try{
             const accessToken = req.headers.authorization
-            const myWorkouts = await axios.get('http://localhost:8080/myroutine/myworkout',
+            const myWorkouts = await axios.get(`${URL}/myroutine/myworkout`,
             {headers : {withCredentials : true,
                 'Content-Type':'application/json',
                 'Authorization': accessToken,

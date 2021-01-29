@@ -2,6 +2,7 @@ const { users, user_workout } = require('../../models')
 const jwt = require('jsonwebtoken')
 const ACCESS_SECRET = process.env.ACCESS_SECRET
 const axios = require('axios')
+const {URL}= require('../../controllers/url');
 
 module.exports = async (req, res) => {
     try {
@@ -18,7 +19,7 @@ module.exports = async (req, res) => {
             workoutId: req.body.workoutId
         }) // 조인테이블
 
-        const workoutAxios = await axios.get('http://localhost:8080/main')
+        const workoutAxios = await axios.get(`${URL}/main`)
         const workoutList = workoutAxios.data.data;
 
         let data = [];
@@ -28,7 +29,7 @@ module.exports = async (req, res) => {
             }
         }
 
-        res.status(200).redirect('http://localhost:8080/myroutine/myworkout')
+        res.status(200).redirect(`${URL}/myroutine/myworkout`)
 
     } catch (err) {
         res.status(500).send("server error")
