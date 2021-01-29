@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
         grant_type: "authorization_code",
         client_id: kakaoClientId,
         client_secret: kakaoClientSecret,
-        redirect_uri: 'http://localhost:3000/dashboard',
+        redirect_uri: 'https://savemehomt.com/dashboard',
         code
       })
     });

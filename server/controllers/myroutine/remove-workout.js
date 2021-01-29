@@ -2,6 +2,7 @@ const { users, user_workout } = require('../../models');
 const accessKey = process.env.ACCESS_SECRET;
 const { verify } = require('jsonwebtoken');
 const { Op } = require('sequelize');
+const {URL}= require('../../controllers/url');
 
 module.exports = async(req,res) =>{
     
@@ -25,7 +26,7 @@ module.exports = async(req,res) =>{
             }
         });
     
-        return res.redirect('http://localhost:8080/myroutine/myworkout');
+        return res.redirect(`${URL}/myroutine/myworkout`);
     }catch(err){
         return res.status(500).send('server error');
     }

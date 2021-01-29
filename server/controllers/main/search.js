@@ -1,9 +1,10 @@
 const axios = require('axios');
+const {URL}= require('../../controllers/url');
 module.exports = async(req,res) =>{
 
     const { keyword } = req.body;
 
-    const data = await axios.get('http://localhost:8080/main', 
+    const data = await axios.get(`${URL}/main`, 
     {header : {withCredentials : true}});
 
     const workoutList = data.data.data;

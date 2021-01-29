@@ -1,4 +1,5 @@
 const { routines, routine_workout } = require('../../models');
+const {URL}= require('../../controllers/url');
 
 module.exports = async (req, res) => {
     try {
@@ -7,7 +8,7 @@ module.exports = async (req, res) => {
 
         await routine_workout.destroy({ where : {routineId : routineId}});
 
-        res.redirect('http://localhost:8080/myroutine')
+        res.redirect(`${URL}/myroutine`)
 
     } catch (err) {
         res.status(500).send('server error')

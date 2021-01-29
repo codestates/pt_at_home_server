@@ -1,6 +1,7 @@
 const { users, workouts } = require('../../models');
 const { verify } = require('jsonwebtoken');
 const axios = require('axios');
+const {URL}= require('../../controllers/url');
 
 const accessToken = process.env.ACCESS_SECRET;
 
@@ -28,7 +29,7 @@ module.exports = async(req,res) =>{
             return workout.dataValues;
         })
     
-        const data = await axios.get('http://localhost:8080/main', 
+        const data = await axios.get(`${URL}/main`, 
         {header : {withCredentials : true}});
     
         const workoutList = data.data.data;
