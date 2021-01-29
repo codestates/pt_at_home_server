@@ -4,5 +4,8 @@ module.exports = {
     signout : require('./signout'),
     signup : require('./signup'),
     update : require('./update'),
-    token : require('./token')
+    token : require('./token'),
+    kakao : require('./kakao'),
+    google : require('./google'),
+    github : require('./github'),
 }
