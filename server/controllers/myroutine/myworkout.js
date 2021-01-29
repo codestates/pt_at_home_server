@@ -1,14 +1,14 @@
-const { users, workouts, image, parts } = require('../../models');
+const { users, workouts } = require('../../models');
 const { verify } = require('jsonwebtoken');
 const axios = require('axios');
 
-const refreshKey = process.env.REFRESH_SECRET;
+const accessToken = process.env.ACCESS_SECRET;
 
 module.exports = async(req,res) =>{
     
     try {
         const userInfoInToken = req.headers.authorization.substr(7);
-        const checkToken = verify(userInfoInToken, refreshKey);
+        const checkToken = verify(userInfoInToken, accessToken);
         const userId = await users.findOne({
             attributes : ['id'],
             where : {email : checkToken.email}
@@ -43,7 +43,11 @@ module.exports = async(req,res) =>{
                 return false;
             }
         })
-        return res.send({data : resultData, message : 'ok'});
+
+
+        return resultData.length === 0 ?
+            res.send({ message : 'none data'}) :
+            res.send({data : resultData, message : 'ok'});
     } catch(err) {
         return res.status(500).send('server error');
     }
