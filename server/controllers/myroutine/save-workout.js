@@ -2,7 +2,7 @@ const { users, user_workout } = require('../../models')
 const jwt = require('jsonwebtoken')
 const ACCESS_SECRET = process.env.ACCESS_SECRET
 const axios = require('axios')
-const {URL}= require('../../controllers/url');
+const { URL } = require('../../controllers/url');
 
 module.exports = async (req, res) => {
     try {
