@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
                 await users.update({ accessToken, refreshToken }, { where: { email: req.body.email } })
 
                 const accessVerify = jwt.verify(accessToken, ACCESS_SECRET);
-                const date = new Date(parseInt(accessVerify.exp) * 1000).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
+                const date = new Date(parseInt(accessVerify.exp) * 1000)
 
                 res.status(200)
                     .cookie('refreshToken', refreshToken, { httpOnly: true })

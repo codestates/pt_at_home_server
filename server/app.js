@@ -14,7 +14,7 @@ const app = express();
 
 const models = require("./models/index.js");
 
-models.sequelize.sync().then( () => {
+models.sequelize.sync().then(() => {
   console.log(" DB 연결 성공");
 }).catch(err => {
   console.log("연결 실패");
@@ -22,33 +22,33 @@ models.sequelize.sync().then( () => {
 })
 
 app.use(
-    session ({
-      secret : process.env.SESSION_SECRET,
-      cookie : {
-        path : '/',
-        sameSite : 'none',
-        secure : true,
-        httpOnly : true,
-        maxAge : 60000 * 60,
-      }
-    })
+  session({
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+      path: '/',
+      sameSite: 'none',
+      secure: true,
+      httpOnly: true,
+      maxAge: 60000 * 60,
+    }
+  })
 )
 
 
 app.use(cors({
-  origin : [
+  origin: [
     'http://localhost:3000',
     'http://localhost:8080',
     'https://savemehomt.com'
   ],
-  methods : ['GET', 'POST'],
-  credentials : true
+  methods: ['GET', 'POST'],
+  credentials: true
 }));
 
 app.use('/', express.static(__dirname + '/build'));
- app.get('/*', (req, res) => {
-      res.sendFile(path.join(__dirname, 'build'))
-  })
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build'))
+})
 
 app.use(logger('dev'));
 app.use(express.json());

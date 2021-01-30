@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         console.log()
         try {
             const tokenVerify = jwt.verify(token, REFRESH_SECRET);
-            const date = new Date(parseInt(tokenVerify.exp) * 1000).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
+            const date = new Date(parseInt(tokenVerify.exp) * 1000)
             if (userName && password) {
                 const hash = await bcrypt.hash(req.body.password, saltRounds);
                 await users.update({ userName, password: hash }, { where: { email: tokenVerify.email } })

@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
                     expiresIn: '1m'
                 })
                 const accessVerify = jwt.verify(accessToken, ACCESS_SECRET);
-                const date = new Date(parseInt(accessVerify.exp) * 1000).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
+                const date = new Date(parseInt(accessVerify.exp) * 1000)
 
                 await users.update({ accessToken }, { where: { email: refreshInfo.email } })
                 res.status(200)

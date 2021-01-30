@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
         }, REFRESH_SECRET, {
             expiresIn: '5h'
         })
-        
+
         console.log(userdata.data.email)
         let userInfo = await users.findOne({
             where: { email: userdata.data.email }
@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
         }
 
         const accessVerify = jwt.verify(accessToken, ACCESS_SECRET);
-        const date = new Date(parseInt(accessVerify.exp) * 1000).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })
+        const date = new Date(parseInt(accessVerify.exp) * 1000)
 
         res.status(200)
             .cookie('refreshToken', refreshToken, { httpOnly: true })
