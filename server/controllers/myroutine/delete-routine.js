@@ -1,29 +1,16 @@
-const jwt = require('jsonwebtoken')
-const ACCESS_SECRET = process.env.ACCESS_SECRET
-const REFRESH_SECRET = process.env.REFRESH_SECRET
-const axios = require('axios')
-const { users, workouts, routines, routine_workout } = require('../../models');
+const { routines, routine_workout } = require('../../models');
+const {URL}= require('../../controllers/url');
 
 module.exports = async (req, res) => {
     try {
-        const token = req.headers.authorization.substr(7);
-        const accessVerify = jwt.verify(token, REFRESH_SECRET)
+        const { routineId } = req.body
+        await routines.destroy({ where : {id : routineId}});
 
-        const delroutine = await routines.findOne({
-            where: { id: req.body.routineId },
-            include: {
-                model: workouts
-            }
-        })
+        await routine_workout.destroy({ where : {routineId : routineId}});
 
-        const delrw = await routine_workout.findOne({
-            where: { routineId: req.body.routineId }
-        })
-
-        res.redirect('http://localhost:8080/myroutine')
+        res.redirect(`${URL}/myroutine`)
 
     } catch (err) {
-        console.log(err)
         res.status(500).send('server error')
     }
 }

@@ -18,7 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     workoutId: DataTypes.INTEGER,
     workoutId: DataTypes.INTEGER,
     myCount: DataTypes.INTEGER,
-    mySet: DataTypes.INTEGER
+    mySetCount: DataTypes.INTEGER,
+    myBreakTime : DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'routine_workout',
