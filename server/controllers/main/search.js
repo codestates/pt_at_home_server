@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
         })
 
         if (filterData.length === 0) {
-            return res.status(400).send({ message: 'not found' });
+            return res.status(300).send({ data: [], message: 'not found' });
         }
         return res.send({ data: filterData, message: 'ok' })
     } catch (err) {

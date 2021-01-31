@@ -53,9 +53,9 @@ module.exports = async (req, res) => {
             ).send({ data: result, message: 'signup success' })
         } else {
             if (userCheck.email === email) {
-                return res.status(400).send({ message: 'user already exists' });
+                return res.status(300).send({ message: 'user already exists' });
             } else if (userCheck.userName === userName) {
-                return res.status(400).send({ message: 'userName not allowed' })
+                return res.status(300).send({ message: 'userName not allowed' })
             }
         }
     }
