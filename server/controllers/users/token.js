@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
                     userName: refreshVerify.userName,
                     email: refreshVerify.email
                 }, ACCESS_SECRET, {
-                    expiresIn: '1m'
+                    expiresIn: '3h'
                 })
                 const accessVerify = jwt.verify(accessToken, ACCESS_SECRET);
                 const date = new Date(parseInt(accessVerify.exp) * 1000)
