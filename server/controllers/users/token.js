@@ -1,6 +1,5 @@
 const { users } = require('../../models')
 const jwt = require('jsonwebtoken')
-const { token } = require('morgan')
 const ACCESS_SECRET = process.env.ACCESS_SECRET
 const REFRESH_SECRET = process.env.REFRESH_SECRET
 
@@ -8,7 +7,6 @@ module.exports = async (req, res) => {
     if (!req.headers.authorization) {
         res.status(400).send({ message: 'accessToken not found' })
     } else {
-        let token = req.headers.authorization.split(" ")[2];
         try {
             const refreshVerify = jwt.verify(req.cookies.refreshToken, REFRESH_SECRET)
             const refreshInfo = await users.findOne({ where: { email: refreshVerify.email } });
@@ -18,7 +16,7 @@ module.exports = async (req, res) => {
                     userName: refreshVerify.userName,
                     email: refreshVerify.email
                 }, ACCESS_SECRET, {
-                    expiresIn: '3h'
+                    expiresIn: '1h'
                 })
                 const accessVerify = jwt.verify(accessToken, ACCESS_SECRET);
                 const date = new Date(parseInt(accessVerify.exp) * 1000)
