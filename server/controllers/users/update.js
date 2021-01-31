@@ -1,6 +1,5 @@
 const { users } = require('../../models')
 const jwt = require('jsonwebtoken')
-const ACCESS_SECRET = process.env.ACCESS_SECRET
 const REFRESH_SECRET = process.env.REFRESH_SECRET
 const bcrypt = require('bcrypt')
 const saltRounds = 10
