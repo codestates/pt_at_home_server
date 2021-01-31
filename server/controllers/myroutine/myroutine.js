@@ -41,7 +41,7 @@ module.exports = async (req, res) => {
                         myWorkouts.push(list);
                     }
                 })
-                return myWorkouts
+                return myWorkouts[0]
             })
         })
 
