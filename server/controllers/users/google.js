@@ -1,10 +1,8 @@
 
 const { users } = require('../../models')
 const jwt = require('jsonwebtoken')
-// const { OAuth2Client } = require('google-auth-library')
 const ACCESS_SECRET = process.env.ACCESS_SECRET
 const REFRESH_SECRET = process.env.REFRESH_SECRET
-// const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 const axios = require('axios')
 const qs = require('qs')
 
@@ -34,7 +32,7 @@ module.exports = async (req, res) => {
             userName: userdata.data.email.split('@')[0],
             email: userdata.data.email
         }, REFRESH_SECRET, {
-            expiresIn: '5h'
+            expiresIn: '3h'
         })
 
         console.log(userdata.data.email)
@@ -70,7 +68,7 @@ module.exports = async (req, res) => {
                     createdAt: userInfo.dataValues.createdAt,
                     updatedAt: userInfo.dataValues.updatedAt
                 },
-                message: 'auth success'
+                message: 'signup successs'
             })
         console.log("login")
     } catch (err) {

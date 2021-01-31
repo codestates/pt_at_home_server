@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
             return data.dataValues
         })
 
-        res.send({ data: result });
+        res.send({ data: result, message: 'ok' });
     } catch (err) {
         res.status(500).send({ message: 'server error' })
     }
