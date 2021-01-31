@@ -76,7 +76,7 @@ module.exports = async (req, res) => {
         }
     }
 
-    if (path === 'dashboard') {
+    if (path === 'createroutine') {
         try {
             const dashboard = await axios.get(`${URL}/main`,
                 { header: { withCredentials: true } });
