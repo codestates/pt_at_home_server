@@ -76,7 +76,7 @@ module.exports = async (req, res) => {
         }
     }
 
-    if (path === 'createroutine') {
+    if (path === 'dashboard') {
         try {
             const dashboard = await axios.get(`${URL}/main`,
                 { header: { withCredentials: true } });
@@ -86,7 +86,7 @@ module.exports = async (req, res) => {
         } catch (err) {
             return res.status(500).send({ message: 'server error' })
         }
-    } else if (path === 'routine') {
+    } else if (path === 'createroutine') {
         try {
             const accessToken = req.headers.authorization
             const myWorkouts = await axios.get(`${URL}/myroutine/myworkout`,
