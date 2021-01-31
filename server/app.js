@@ -9,7 +9,7 @@ const session = require('express-session')
 const users = require('./routes/users');
 const main = require('./routes/main');
 const myroutine = require('./routes/myroutine');
-const PORT = 8080;
+const PORT = 80;
 const app = express();
 
 const models = require("./models/index.js");
@@ -45,15 +45,15 @@ app.use(cors({
   credentials: true
 }));
 
-app.use('/', express.static(__dirname + '/build'));
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build'))
-})
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use('/', express.static(__dirname + '/build'));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
 
 app.use('/users', users);
 app.use('/main', main);
