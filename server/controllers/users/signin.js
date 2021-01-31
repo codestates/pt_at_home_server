@@ -49,9 +49,11 @@ module.exports = async (req, res) => {
                         },
                         message: 'signin success'
                     })
+            } else {
+                res.status(300).send({ message: 'user not exist' })
             }
         } else {
-            res.status(400).send({ message: 'user not exist' })
+            res.status(300).send({ message: 'user not exist' })
         }
     } catch (err) {
         res.status(500).send({ message: 'server error' })

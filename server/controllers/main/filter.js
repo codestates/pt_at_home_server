@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
             }
         })
         if (filtering.length === 0) {
-            return res.send({ message: '일치하는 검색 결과가 없습니다.' })
+            return res.status(300).send({ data: [], message: 'not found' })
         }
         return res.send({ data: filtering, message: 'ok' })
     }
