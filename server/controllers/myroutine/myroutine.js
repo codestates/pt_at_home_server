@@ -62,8 +62,7 @@ module.exports = async (req, res) => {
 
     if (!req.headers.authorization) {
         try {
-
-            judgeMyOrRecommend(0);
+            judgeMyOrRecommend('admin');
 
         } catch (err) {
             return res.status(500).send({ message: 'server error' })
@@ -73,7 +72,6 @@ module.exports = async (req, res) => {
             const token = req.headers.authorization.substr(7);
             const accessVerify = jwt.verify(token, ACCESS_SECRET);
             const email = accessVerify.email
-
             judgeMyOrRecommend(email);
 
         } catch (err) {
