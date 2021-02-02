@@ -63,8 +63,8 @@ module.exports = async (req, res) => {
                 auth: {
                     token: accessToken, expData: date
                 },
-                message: 'signup successs'
-            }
+            },
+            message: 'auth success'
         })
     } catch (err) {
         res.status(500).send({ message: 'server error' })
