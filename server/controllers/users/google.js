@@ -34,8 +34,7 @@ module.exports = async (req, res) => {
         }, REFRESH_SECRET, {
             expiresIn: '3h'
         })
-
-        console.log(userdata.data.email)
+        
         let userInfo = await users.findOne({
             where: { email: userdata.data.email }
         })
@@ -68,9 +67,8 @@ module.exports = async (req, res) => {
                     createdAt: userInfo.dataValues.createdAt,
                     updatedAt: userInfo.dataValues.updatedAt
                 },
-                message: 'signup successs'
+                message: 'auth success'
             })
-        console.log("login")
     } catch (err) {
         console.log(err)
         res.status(500).send({ message: 'server error' })

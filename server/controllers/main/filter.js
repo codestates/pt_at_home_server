@@ -69,10 +69,14 @@ module.exports = async (req, res) => {
                 }
                 return true;
             })
-            if (filtering.length === 0) {
+            
+            if (category === "" && part.length === 0 && tool.length === 0) {
                 return res.send({ data: list, message: 'ok' })
+            }else if(filtering.length === 0){
+                return res.status(300).send({data : [], message : 'not found'});
+            }else{
+                return res.send({ data: filtering, message: 'ok' })
             }
-            return res.send({ data: filtering, message: 'ok' })
         }
     }
 
