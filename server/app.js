@@ -9,7 +9,7 @@ const session = require('express-session')
 const users = require('./routes/users');
 const main = require('./routes/main');
 const myroutine = require('./routes/myroutine');
-const PORT = 8080;
+const PORT = 80;
 const app = express();
 
 const models = require("./models/index.js");
@@ -37,8 +37,6 @@ app.use(
 
 app.use(cors({
   origin: [
-    'http://localhost:3000',
-    'http://localhost:8080',
     'https://savemehomt.com'
   ],
   methods: ['GET', 'POST'],
