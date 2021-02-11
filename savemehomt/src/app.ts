@@ -1,90 +1,69 @@
 import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import session from 'express-session';
 import cors from 'cors';
 import express from 'express';
-import helmet from 'helmet';
-import hpp from 'hpp';
-import morgan from 'morgan';
-import compression from 'compression';
-import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
-import DB from './database';
-import Routes from './interfaces/routes.interface';
-import errorMiddleware from './middlewares/error.middleware';
-import { logger, stream } from './utils/logger';
+import models from './database';
 
-class App {
-  public app: express.Application;
-  public port: string | number;
-  public env: string;
+import main from './routes/myworkout.route';
+import myroutine from './routes/main.route';
+import users from './routes/users.route';
 
-  constructor(routes: Routes[]) {
-    this.app = express();
-    this.port = process.env.PORT || 3000;
-    this.env = process.env.NODE_ENV || 'development';
+const app:express.Application = express();
+const PORT:number = 8080;
 
-    this.connectToDatabase();
-    this.initializeMiddlewares();
-    this.initializeRoutes(routes);
-    this.initializeSwagger();
-    this.initializeErrorHandling();
-  }
+app.use(express.json());
 
-  public listen() {
-    this.app.listen(this.port, () => {
-      logger.info(`🚀 App listening on the port ${this.port}`);
-    });
-  }
 
-  public getServer() {
-    return this.app;
-  }
+models.sequelize.sync().then(() => {
+  console.log(" DB 연결 성공");
+}).catch(err => {
+  console.log("연결 실패");
+  console.log(err);
+})
 
-  private connectToDatabase() {
-    DB.sequelize.sync({ force: false });
-  }
-
-  private initializeMiddlewares() {
-    if (this.env === 'production') {
-      this.app.use(morgan('combined', { stream }));
-      this.app.use(cors({ origin: 'your.domain.com', credentials: true }));
-    } else if (this.env === 'development') {
-      this.app.use(morgan('dev', { stream }));
-      this.app.use(cors({ origin: true, credentials: true }));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+      path: '/',
+      sameSite: 'none',
+      secure: true,
+      httpOnly: true,
+      maxAge: 60000 * 60,
     }
+  })
+)
 
-    this.app.use(hpp());
-    this.app.use(helmet());
-    this.app.use(compression());
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: true }));
-    this.app.use(cookieParser());
-  }
 
-  private initializeRoutes(routes: Routes[]) {
-    routes.forEach(route => {
-      this.app.use('/', route.router);
-    });
-  }
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:8080',
+    'https://savemehomt.com'
+  ],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 
-  private initializeSwagger() {
-    const options = {
-      swaggerDefinition: {
-        info: {
-          title: 'REST API',
-          version: '1.0.0',
-          description: 'Example docs',
-        },
-      },
-      apis: ['swagger.yaml'],
-    };
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
-    const specs = swaggerJSDoc(options);
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-  }
 
-  private initializeErrorHandling() {
-    this.app.use(errorMiddleware);
-  }
-}
+app.use('/users', users);
+app.use('/main', main);
+app.use('/myroutine', myroutine);
 
-export default App;
+
+// app.use('/', express.static(__dirname + '/build'));
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'))
+// })
+
+app.listen(PORT, () => {
+  console.log(`server on ${PORT}`)
+});
+
+module.exports = app;

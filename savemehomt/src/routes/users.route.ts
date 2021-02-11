@@ -1,25 +1,16 @@
 import { Router } from 'express';
-import UsersController from '../controllers/users.controller';
-import { CreateUserDto } from '../dtos/users.dto';
-import Route from '../interfaces/routes.interface';
-import validationMiddleware from '../middlewares/validation.middleware';
+import {github, google, kakao, signin, signout, signup, token, update,resign} from '../controllers/users/index'
 
-class UsersRoute implements Route {
-  public path = '/users';
-  public router = Router();
-  public usersController = new UsersController();
+const router = Router();
 
-  constructor() {
-    this.initializeRoutes();
-  }
+router.post('/resign', resign);
+router.post('/update', update);
+router.get('/signout', signout);
+router.post('/signin', signin);
+router.post('/signup', signup);
+router.post('/token', token);
+router.post('/kakao', kakao);
+router.post('/google', google);
+router.post('/github', github);
 
-  private initializeRoutes() {
-    this.router.get(`${this.path}`, this.usersController.getUsers);
-    this.router.get(`${this.path}/:id(\\d+)`, this.usersController.getUserById);
-    this.router.post(`${this.path}`, validationMiddleware(CreateUserDto, 'body'), this.usersController.createUser);
-    this.router.put(`${this.path}/:id(\\d+)`, validationMiddleware(CreateUserDto, 'body', true), this.usersController.updateUser);
-    this.router.delete(`${this.path}/:id(\\d+)`, this.usersController.deleteUser);
-  }
-}
-
-export default UsersRoute;
+export default router;
