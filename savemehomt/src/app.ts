@@ -5,9 +5,9 @@ import cors from 'cors';
 import express from 'express';
 import models from './database';
 
-import main from './routes/myworkout.route';
-import myroutine from './routes/main.route';
-import users from './routes/users.route';
+require("dotenv").config();
+
+import {main, users, myroutine} from './routes/index';
 
 const app:express.Application = express();
 const PORT:number = 8080;
