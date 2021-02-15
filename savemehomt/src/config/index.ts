@@ -3,7 +3,7 @@ const dbConfig = {
     username: 'root',
     password: 'wkdalsdn1!A',
     database: 'ptathome',
-    host: 'localhost',
+    host: '127.0.0.1',
     dialect: 'mysql',
   },
   test: {
