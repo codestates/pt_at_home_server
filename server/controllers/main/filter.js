@@ -47,12 +47,13 @@ module.exports = async (req, res) => {
             }
         } else {
             const filtering = list.filter(workout => {
-                let filter = 1;
+                let filter = 0;
 
                 if (part) {
                     for (let i = 0; i < part.length; i++) {
-                        if (!workout.parts.includes(part[i])) {
-                            filter = 0
+                        if (workout.parts.includes(part[i])) {
+                            console.log(workout.parts);
+                            filter = 1
                             break;
                         }
                     }
@@ -60,7 +61,7 @@ module.exports = async (req, res) => {
                 if (!filter) {
                     return false;
                 }
-                if (tool) {
+                if (tool.length !== 0) {
                     if (workout.tool === tool[0]) {
                         return true;
                     } else {
