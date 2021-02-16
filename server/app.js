@@ -9,7 +9,7 @@ const session = require('express-session')
 const users = require('./routes/users');
 const main = require('./routes/main');
 const myroutine = require('./routes/myroutine');
-const PORT = 8080;
+const PORT = 80;
 const app = express();
 
 const models = require("./models/index.js");
@@ -56,10 +56,10 @@ app.use('/main', main);
 app.use('/myroutine', myroutine);
 
 
-// app.use('/', express.static(__dirname + '/build'));
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'))
-// })
+app.use('/', express.static(__dirname + '/build'));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
 
 app.listen(PORT, () => {
   console.log(`server on ${PORT}`)
