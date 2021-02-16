@@ -15,8 +15,11 @@ module.exports = async (req, res) => {
 
         const _parts = await workouts.findAll({
             attributes: ['id'],
-            include: { model: parts }
+            include: { model: parts },
+            // raw: true,
         })
+
+        console.log(_parts);
 
         const result = workoutData.map((data, index) => {
             data.dataValues.image = new Array;
