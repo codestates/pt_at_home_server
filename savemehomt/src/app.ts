@@ -5,7 +5,7 @@ import cors from 'cors';
 import express from 'express';
 import models from './database';
 
-require("dotenv").config();
+import 'dotenv/config'
 
 import {main, users, myroutine} from './routes/index';
 
@@ -24,7 +24,7 @@ models.sequelize.sync().then(() => {
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: 'ptathomeserver',
     cookie: {
       path: '/',
       sameSite: 'none',

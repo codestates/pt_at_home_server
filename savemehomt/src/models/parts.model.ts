@@ -1,11 +1,7 @@
-import {Sequelize, Model, Optional, DataTypes} from 'sequelize';
-import {partStrickMode} from '../interfaces/main.interface';
+import {Sequelize, Model, DataTypes} from 'sequelize';
 
-export type partCreationAttributes =  Optional<partStrickMode, 'part'>;
-
-export class parts extends Model<partStrickMode, partCreationAttributes> implements partStrickMode{
+export class parts extends Model{
     public part : string;
-
     public readonly createdAt !: Date;
     public readonly updatedAt !: Date;
 }
@@ -15,7 +11,7 @@ export default function (sequelize : Sequelize): typeof parts {
     parts.init(
         {
             part : {
-                type : DataTypes.INTEGER,
+                type : DataTypes.STRING,
             },
         },
         {
@@ -24,5 +20,6 @@ export default function (sequelize : Sequelize): typeof parts {
             sequelize
         }
     )
+
     return parts;
 }

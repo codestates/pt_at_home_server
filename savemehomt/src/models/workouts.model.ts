@@ -1,11 +1,9 @@
-import {Sequelize, Model, Optional, DataTypes} from 'sequelize';
-import {workoutStrickMode} from '../interfaces/main.interface';
+import {Sequelize, Model, DataTypes} from 'sequelize';
+import {parts} from './parts.model';
+import {workout_parts} from './workout_parts.model'
 
-export type workoutCreationAttributes = 
-Optional<workoutStrickMode, 
-'title' | 'instruction' | 'setCount' | 'count' | 'breakTime' | 'calrorie' | 'category' | 'tool'>;
-
-export class workouts extends Model<workoutStrickMode, workoutCreationAttributes> implements workoutStrickMode{
+export class workouts extends Model{
+    public id : number;
     public title : string;
     public instruction : string;
     public setCount : number;
@@ -22,6 +20,11 @@ export class workouts extends Model<workoutStrickMode, workoutCreationAttributes
 export default function (sequelize : Sequelize): typeof workouts {
     workouts.init(
         {
+            id :{
+                type: DataTypes.INTEGER.UNSIGNED,
+                autoIncrement: true,
+                primaryKey: true,
+            },
             title : {
                 type : DataTypes.STRING,
             },
@@ -45,7 +48,7 @@ export default function (sequelize : Sequelize): typeof workouts {
             },
             tool : {
                 type : DataTypes.STRING,
-            }
+            },
         },
         {
             modelName : 'workouts',
@@ -53,5 +56,11 @@ export default function (sequelize : Sequelize): typeof workouts {
             sequelize
         }
     )
-    return workouts;
+
+    workouts.belongsToMany(parts, {
+        through : workout_parts,
+        foreignKey : 'workoutId',
+    })
+
+    return workouts
 }

@@ -1,9 +1,6 @@
-import {Sequelize, Model, Optional, DataTypes} from 'sequelize';
-import {imageStrickMode} from '../interfaces/main.interface';
+import {Sequelize, Model, DataTypes} from 'sequelize'; 
 
-export type imageCreationAttributes =  Optional<imageStrickMode, 'workoutId' | 'url'>;
-
-export class image extends Model<imageStrickMode, imageCreationAttributes> implements imageStrickMode{
+export class images extends Model{
     public workoutId : number;
     public url : string;
 
@@ -12,8 +9,8 @@ export class image extends Model<imageStrickMode, imageCreationAttributes> imple
 }
 
 
-export default function (sequelize : Sequelize): typeof image {
-    image.init(
+export default function (sequelize : Sequelize): typeof images {
+    images.init(
         {
             workoutId : {
                 type : DataTypes.INTEGER,
@@ -23,10 +20,10 @@ export default function (sequelize : Sequelize): typeof image {
             },
         },
         {
-            modelName : 'image',
-            tableName : 'image',
+            modelName : 'images',
+            tableName : 'images',
             sequelize
         }
     )
-    return image;
+    return images;
 }
