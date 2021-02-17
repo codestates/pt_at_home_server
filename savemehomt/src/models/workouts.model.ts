@@ -1,6 +1,11 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
 import {parts} from './parts.model';
-import {workout_parts} from './workout_parts.model'
+import {workout_parts} from './workout_parts.model';
+import { users } from "./users.model";
+import { user_workouts } from "./user_workouts.model";
+import { routines } from "./routines.model";
+import { routine_workouts } from "./routine_workouts.model";
+import { images } from './image.model';
 
 export class workouts extends Model{
     public id : number;
@@ -60,6 +65,20 @@ export default function (sequelize : Sequelize): typeof workouts {
     workouts.belongsToMany(parts, {
         through : workout_parts,
         foreignKey : 'workoutId',
+    })
+
+    workouts.belongsToMany(users, {
+        through : user_workouts,
+        foreignKey : 'workoutId'
+    })
+
+    workouts.belongsToMany(routines, {
+        through : routine_workouts,
+        foreignKey : 'workoutId'
+    })
+
+    workouts.hasMany(images,{
+        foreignKey : 'workoutId'
     })
 
     return workouts
