@@ -8,9 +8,6 @@ const saltRounds = 10;
 const accessKey = process.env.ACCESS_SECRET;
 const refreshKey = process.env.REFRESH_SECRET;
 
-const {
-    ACCESS_SECRET
-} = process.env;
 
 const signup: expressTemplate = async(req,res)=>{
     const { email, password, userName } : userType = req.body
@@ -20,8 +17,6 @@ const signup: expressTemplate = async(req,res)=>{
     // try {
         if (!userCheck) {
             const userInfo = { email: email, userName: userName }
-
-            console.log(ACCESS_SECRET);
 
             const accessToken = sign(userInfo, accessKey,
                 {
