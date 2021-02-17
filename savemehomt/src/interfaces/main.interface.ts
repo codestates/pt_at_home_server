@@ -1,31 +1,24 @@
 import { Request, Response } from 'express';
 
-export interface workoutStrickMode {
+export interface listType {
+    id : number;
     title : string;
     instruction : string;
     setCount : number;
     count : number;
-    breakTime : number;
     calrorie : number;
     category : string;
-    tool : string
+    tool : string;
+    url : Array<string>;
+    parts : Array<string>;
 }
 
-export interface imageStrickMode {
-    workoutId : number;
-    url : string;
+export interface reqType {
+    category : string;
+    part : Array<string>
+    tool : Array<string>
+    path : string;
 }
-
-export interface workoutPartStrickMode {
-    partId : number;
-    workoutId : number;
-}
-
-export interface partStrickMode {
-    part : string;
-}
-
-
 
 export type expressTemplate = (req: Request, res: Response) => void;
 
