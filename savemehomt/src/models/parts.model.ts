@@ -1,22 +1,22 @@
-import {Sequelize, Model, DataTypes} from 'sequelize';
+import { Sequelize, Model, DataTypes } from 'sequelize';
 
-export class parts extends Model{
-    public part : string;
+export class parts extends Model {
+    public part: string;
     public readonly createdAt !: Date;
     public readonly updatedAt !: Date;
 }
 
 
-export default function (sequelize : Sequelize): typeof parts {
+export default function (sequelize: Sequelize): typeof parts {
     parts.init(
         {
-            part : {
-                type : DataTypes.STRING,
+            part: {
+                type: DataTypes.STRING,
             },
         },
         {
-            modelName : 'parts',
-            tableName : 'parts',
+            modelName: 'parts',
+            tableName: 'parts',
             sequelize
         }
     )

@@ -1,16 +1,16 @@
 const dbConfig = {
   development: {
-    username: 'root',
-    password: 'wkdalsdn1!A',
-    database: 'ptathome',
-    host: '127.0.0.1',
+    username: "root",
+    password: "1234",
+    database: "ptathome",
+    host: "localhost",
     dialect: 'mysql',
   },
   test: {
-    username: 'root',
-    password: 'password',
-    database: 'sequelize',
-    host: 'localhost',
+    username: "root",
+    password: "1234",
+    database: "ptathome",
+    host: "localhost",
     dialect: 'mysql',
   },
   production: {
