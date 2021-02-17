@@ -1,13 +1,13 @@
 import {expressTemplate} from '../../interfaces/users.interface';
 import axios from 'axios';
 import {url} from '../url';
+import {listType, reqType} from '../../interfaces/main.interface';
 
 const filter: expressTemplate = async(req,res)=>{
 
-    
-    const { category, part, tool, path } : 
-    {category: string, part:Array<string>, tool:Array<string>, path:string} = req.body
+    const { category, part, tool, path } : reqType = req.body
 
+    console.log(part);
     function getfilterData(data, list) {
         const filtering = list.filter(workout => {
             let filter:boolean = true;
@@ -48,7 +48,7 @@ const filter: expressTemplate = async(req,res)=>{
                 res.send({ data: filtering, message: 'ok' });
             }
         } else {
-            const filtering = list.filter(workout => {
+            const filtering:Array<listType> = list.filter(workout => {
                 let filter:boolean = false;
 
                 if (part) {
@@ -88,7 +88,8 @@ const filter: expressTemplate = async(req,res)=>{
                 { headers: { withCredentials: true } });
 
 
-            const workoutList = dashboard.data.data;
+            const workoutList:Array<listType>= dashboard.data.data;
+
             filter(workoutList);
         } catch (err) {
             return res.status(500).send({ message: 'server error' })
