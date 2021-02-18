@@ -8,6 +8,6 @@ router.post('/deleteroutine', deleteRoutine);
 router.get('/', myRoutine);
 router.get('/myworkout', myWorkout);
 router.post('/removeworkout', removeWorkout);
-router.post('/saveworkoute', saveWorkout);
+router.post('/saveworkout', saveWorkout);
 
 export default router;
