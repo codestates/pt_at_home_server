@@ -12,15 +12,15 @@ export type auth = {
     expDate : Date;
 }
 
-export interface resultType {
+export interface signType {
     id : number;
     email : string;
     password : string;
     userName : string;
     accessToken? : string;
     refreshToken? : string;
-    readonly updateAt : Date;
-    readonly createAt : Date;
+    readonly updatedAt? : Date;
+    readonly createdAt? : Date;
     auth? : auth;
 }
 
