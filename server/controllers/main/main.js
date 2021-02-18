@@ -19,7 +19,6 @@ module.exports = async (req, res) => {
             // raw: true,
         })
 
-        console.log(_parts);
 
         const result = workoutData.map((data, index) => {
             data.dataValues.image = new Array;
