@@ -2,7 +2,7 @@ import {expressTemplate, userType} from '../../interfaces/users.interface';
 import bcrypt from "bcrypt";
 import { sign, verify } from "jsonwebtoken";
 import { users } from "../../models/users.model";
-import {resultType } from '../../interfaces/users.interface'
+import { signType } from '../../interfaces/users.interface'
 require('dotenv').config();
 
 const saltRounds = 10;
@@ -24,14 +24,12 @@ const signup: expressTemplate = async(req,res)=>{
                     expiresIn: '10h'
                 })
 
-                console.log(accessToken)
-
             const refreshToken = sign(userInfo, refreshKey,
                 {
                     expiresIn: '10h'
                 })
             const hashPassword = await bcrypt.hash(password, saltRounds);
-            let result:resultType = await users.create(
+            let result: signType = await users.create(
                 {
                     email: email,
                     password: hashPassword,
@@ -53,8 +51,6 @@ const signup: expressTemplate = async(req,res)=>{
 
             delete result.refreshToken
             delete result.accessToken
-
-            console.log(result)
 
             return res.cookie('refreshToken', refreshToken,
                 {
