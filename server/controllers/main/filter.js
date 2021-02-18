@@ -52,7 +52,6 @@ module.exports = async (req, res) => {
                 if (part) {
                     for (let i = 0; i < part.length; i++) {
                         if (workout.parts.includes(part[i])) {
-                            console.log(workout.parts);
                             filter = 1
                             break;
                         }
