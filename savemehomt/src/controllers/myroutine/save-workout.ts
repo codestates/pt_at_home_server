@@ -9,11 +9,11 @@ import {Op} from 'sequelize';
 import {userInfoType} from '../../interfaces/myroutine.interface'
 require('dotenv').config();
 
-const ACCESS_SECRET = process.env.ACCESS_SECRET
+const ACCESS_SECRET:string = process.env.ACCESS_SECRET
 
 const saveWorkout: expressTemplate = async(req,res)=>{
 
-    // try {
+    try {
         const { workoutId } : {workoutId : number}= req.body
 
         const token = req.headers.authorization.substr(7);
@@ -24,7 +24,7 @@ const saveWorkout: expressTemplate = async(req,res)=>{
             attributes: ['id'],
             where: { email: accessVerify.email },
             raw :true
-        }) // userId
+        }) 
 
         await user_workouts.findOrCreate({
             where : {
@@ -35,7 +35,7 @@ const saveWorkout: expressTemplate = async(req,res)=>{
                 workoutId: workoutId
             },
             raw :true
-        }) // 조인테이블
+        }) 
 
         const workoutAxios = await axios.get(`${url.URL}/main`)
         const workoutList:Array<listType> = workoutAxios.data.data;
@@ -49,9 +49,9 @@ const saveWorkout: expressTemplate = async(req,res)=>{
 
         res.status(200).redirect(`${url.URL}/myroutine/myworkout`)
 
-    // } catch (err) {
-    //     res.status(500).send("server error")
-    // }
+    } catch (err) {
+        res.status(500).send("server error")
+    }
 }
 
 export default saveWorkout;

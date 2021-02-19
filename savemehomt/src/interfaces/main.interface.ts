@@ -11,6 +11,10 @@ export interface listType {
     tool : string;
     url : Array<string>;
     parts : Array<string>;
+    breakTime? : number;
+    myCount? : number;
+    mySetCount? : number;
+    myBreakTime? :number;
 }
 
 export interface reqType {
