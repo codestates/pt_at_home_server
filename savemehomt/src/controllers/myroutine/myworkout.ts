@@ -8,7 +8,7 @@ import {userType} from '../../interfaces/myroutine.interface';
 import {listType} from '../../interfaces/main.interface'
 require('dotenv').config();
 
-const accessToken = process.env.ACCESS_SECRET;
+const accessToken:string = process.env.ACCESS_SECRET;
 
 const myWorkout: expressTemplate = async(req,res)=>{
     try {
@@ -25,9 +25,6 @@ const myWorkout: expressTemplate = async(req,res)=>{
             where : {userId : userId.id},
             raw : true
         })
-
-        console.log(myWorkout);
-
 
         const data = await axios.get(`${url.URL}/main`,
             { headers: { withCredentials: true } });

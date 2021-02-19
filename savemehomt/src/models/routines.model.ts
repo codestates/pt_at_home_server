@@ -3,6 +3,7 @@ import { routine_workouts } from './routine_workouts.model';
 import { workouts } from './workouts.model';
 
 export class routines extends Model{
+    public id : number;
     public title : string;
     public userId : string;
     public readonly createdAt !: Date;
@@ -13,6 +14,11 @@ export class routines extends Model{
 export default function (sequelize : Sequelize): typeof routines {
     routines.init(
         {
+            id : {
+                type: DataTypes.INTEGER.UNSIGNED,
+                autoIncrement: true,
+                primaryKey: true,
+            },
             title : {
                 type : DataTypes.STRING,
             },
@@ -26,11 +32,6 @@ export default function (sequelize : Sequelize): typeof routines {
             sequelize
         }
     )
-
-    // routines.belongsToMany(workouts, {
-    //     through : routine_workouts,
-    //     foreignKey : 'routineId'
-    // })
 
     return routines;
 }
