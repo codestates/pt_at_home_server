@@ -11,6 +11,7 @@ const express_1 = __importDefault(require("express"));
 const database_1 = __importDefault(require("./database"));
 const index_1 = require("./routes/index");
 require('dotenv').config();
+const path = require('path');
 const app = express_1.default();
 const PORT = 80;
 app.use(express_1.default.json());
@@ -46,10 +47,10 @@ app.use(cookie_parser_1.default());
 app.use('/users', index_1.users);
 app.use('/main', index_1.main);
 app.use('/myroutine', index_1.myroutine);
-app.use('/', express.static(__dirname + '/build'));
+app.use('/', express_1.default.static(__dirname + '/build'));
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 app.listen(PORT, () => {
     console.log(`server on ${PORT}`);
 });

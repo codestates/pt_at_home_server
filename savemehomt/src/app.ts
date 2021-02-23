@@ -8,6 +8,7 @@ import models from './database';
 import {main, users, myroutine} from './routes/index';
 require('dotenv').config()
 
+const path = require('path');
 const app:express.Application = express();
 const PORT:number = 80;
 
@@ -57,10 +58,10 @@ app.use('/main', main);
 app.use('/myroutine', myroutine);
 
 
-// app.use('/', express.static(__dirname + '/build'));
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'))
-// })
+app.use('/', express.static(__dirname + '/build'));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
 
 app.listen(PORT, () => {
   console.log(`server on ${PORT}`)
