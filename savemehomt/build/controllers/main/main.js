@@ -23,11 +23,11 @@ const main = async (req, res) => {
             raw: true,
         });
         const result = workoutData.map((data, index) => {
-            data.url = new Array;
+            data.image = new Array;
             data.parts = new Array;
             _url.forEach(el => {
                 if (el.workoutId === index + 1) {
-                    data.url.push(el.url);
+                    data.image.push(el.url);
                 }
             });
             _parts.forEach(part => {
