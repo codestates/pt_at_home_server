@@ -9,7 +9,7 @@ import {main, users, myroutine} from './routes/index';
 require('dotenv').config()
 
 const app:express.Application = express();
-const PORT:number = 8080;
+const PORT:number = 80;
 
 app.use(express.json());
 

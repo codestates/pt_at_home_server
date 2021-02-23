@@ -1,9 +1,13 @@
+require('dotenv').config();
+
+const DATABASE_SECRET = process.env.DATABASE_SECRET
+
 const dbConfig = {
   development: {
-    username: 'root',
-    password: 'wkdalsdn1!A',
+    username: 'savemehome',
+    password: DATABASE_SECRET,
     database: 'ptathome',
-    host: '127.0.0.1',
+    host: 'databaseptathome.caigvf4pbegf.ap-northeast-2.rds.amazonaws.com',
     dialect: 'mysql',
   },
   test: {
