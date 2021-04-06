@@ -1,4 +1,6 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
+import { dbType } from '.';
+import {sequelize} from './sequelize';
 
 export class parts extends Model{
     public part : string;
@@ -7,19 +9,25 @@ export class parts extends Model{
 }
 
 
-export default function (sequelize : Sequelize): typeof parts {
-    parts.init(
-        {
-            part : {
-                type : DataTypes.STRING,
-            },
+parts.init(
+    {
+        part : {
+            type : DataTypes.STRING,
         },
-        {
-            modelName : 'parts',
-            tableName : 'parts',
-            sequelize
-        }
-    )
+    },
+    {
+        modelName : 'parts',
+        tableName : 'parts',
+        sequelize
+    }
+)
 
-    return parts;
+export const associate = (db : dbType) => {
+    db.parts.belongsToMany(db.workouts, {
+        through : db.workout_parts,
+        foreignKey : 'partId'
+    })
+
 }
+
+export default parts

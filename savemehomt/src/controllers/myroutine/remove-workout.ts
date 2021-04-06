@@ -1,7 +1,6 @@
 import {expressTemplate} from '../../interfaces/users.interface';
 import { verify } from "jsonwebtoken";
-import { users } from "../../models/users.model";
-import { user_workouts } from "../../models/user_workouts.model";
+import {users , user_workouts} from '../../models/index';
 import { Op } from "sequelize";
 import { url } from "../url";
 

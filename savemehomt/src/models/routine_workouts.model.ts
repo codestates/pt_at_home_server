@@ -1,4 +1,6 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
+import { dbType } from '.';
+import {sequelize} from './sequelize';
 
 export class routine_workouts extends Model{
     public routineId : number;
@@ -11,31 +13,33 @@ export class routine_workouts extends Model{
 }
 
 
-export default function (sequelize : Sequelize): typeof routine_workouts {
-    routine_workouts.init(
-        {
-            routineId : {
-                type : DataTypes.INTEGER,
-            },
-            workoutId : {
-                type : DataTypes.INTEGER,
-            },
-            myCount : {
-                type : DataTypes.INTEGER,
-            },
-            mySetCount : {
-                type : DataTypes.INTEGER,
-            },
-            myBreakTime : {
-                type : DataTypes.INTEGER,
-            }
+routine_workouts.init(
+    {
+        routineId : {
+            type : DataTypes.INTEGER,
         },
-        {
-            modelName : 'routine_workouts',
-            tableName : 'routine_workouts',
-            sequelize
+        workoutId : {
+            type : DataTypes.INTEGER,
+        },
+        myCount : {
+            type : DataTypes.INTEGER,
+        },
+        mySetCount : {
+            type : DataTypes.INTEGER,
+        },
+        myBreakTime : {
+            type : DataTypes.INTEGER,
         }
-    )
-
-    return routine_workouts;
+    },
+    {
+        modelName : 'routine_workouts',
+        tableName : 'routine_workouts',
+        sequelize
+    }
+)
+export const associate = (db : dbType) => {
 }
+
+export default routine_workouts
+
+    

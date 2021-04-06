@@ -1,6 +1,8 @@
 import {Sequelize, Model, DataTypes} from 'sequelize';
 import { routine_workouts } from './routine_workouts.model';
 import { workouts } from './workouts.model';
+import {sequelize} from './sequelize';
+import { dbType } from '.';
 
 export class routines extends Model{
     public id : number;
@@ -11,27 +13,28 @@ export class routines extends Model{
 }
 
 
-export default function (sequelize : Sequelize): typeof routines {
-    routines.init(
-        {
-            id : {
-                type: DataTypes.INTEGER.UNSIGNED,
-                autoIncrement: true,
-                primaryKey: true,
-            },
-            title : {
-                type : DataTypes.STRING,
-            },
-            userId : {
-                type : DataTypes.STRING,
-            }
+routines.init(
+    {
+        id : {
+            type: DataTypes.INTEGER.UNSIGNED,
+            autoIncrement: true,
+            primaryKey: true,
         },
-        {
-            modelName : 'routines',
-            tableName : 'routines',
-            sequelize
+        title : {
+            type : DataTypes.STRING,
+        },
+        userId : {
+            type : DataTypes.STRING,
         }
-    )
+    },
+    {
+        modelName : 'routines',
+        tableName : 'routines',
+        sequelize
+    }
+)
 
-    return routines;
+export const associate = (db : dbType) => {
+
 }
+export default routines

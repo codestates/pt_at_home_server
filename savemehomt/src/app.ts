@@ -3,25 +3,24 @@ import logger from 'morgan';
 import session from 'express-session';
 import cors from 'cors';
 import express from 'express';
-import models from './database';
+import {sequelize} from './models/sequelize'
+
 
 import {main, users, myroutine} from './routes/index';
 require('dotenv').config()
 
-const path = require('path');
 const app:express.Application = express();
-const PORT:number = 80;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 
 
-models.sequelize.sync().then(() => {
-  console.log(" DB 연결 성공");
+sequelize.sync().then(()=>{
+  console.log("DB 연결 성공");
 }).catch(err => {
-  console.log("연결 실패");
+  console.log("DB 연결 실패");
   console.log(err);
 })
-
 
 app.use(
   session({
@@ -36,20 +35,27 @@ app.use(
   })
 )
 
+if(process.env.PORT){
+  app.use(cors({
+    origin: [
+      'https://savemehomt.com',
+      'https://s.savemehomt.com'
+    ],
+    methods: ['GET', 'POST','OPTIONS'],
+    credentials: true
+  }))
+  app.use(logger('combined'));
+}else{
+  app.use(cors({
+    origin : true,
+    methods: ['GET', 'POST','OPTIONS'],
+    credentials: true
+  }))
+  app.use(logger('dev'));
+}
 
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:8080',
-    'https://savemehomt.com'
-  ],
-  methods: ['GET', 'POST'],
-  credentials: true
-}));
-
-app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
@@ -57,11 +63,6 @@ app.use('/users', users);
 app.use('/main', main);
 app.use('/myroutine', myroutine);
 
-
-app.use('/', express.static(__dirname + '/build'));
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
 
 app.listen(PORT, () => {
   console.log(`server on ${PORT}`)

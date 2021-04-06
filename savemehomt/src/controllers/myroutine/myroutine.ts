@@ -1,12 +1,8 @@
 import {expressTemplate} from '../../interfaces/users.interface';
-import { routines } from '../../models/routines.model';
+import { routines, users, workouts} from '../../models/index'
 import sequelize from "sequelize";
-import { users } from "../../models/users.model";
-import { workouts } from '../../models/workouts.model';
-import axios from "axios";
 import { verify } from "jsonwebtoken";
-import { url } from "../url";
-import { listType } from "../../interfaces/main.interface";
+import workList from '../helper';
 
 require('dotenv').config();
 
@@ -26,16 +22,21 @@ const myRoutine: expressTemplate = async(req,res)=>{
             }
         })
 
+        if(!userInfo){
+            return res.status(404).send("not admin");
+        }
+
         const routineList = await workouts.findAll({
             include : {model : routines, where : {userId : userInfo.id}},
             order : [sequelize.col('routines.id')],
             raw : true
         })
 
-        const data = await axios.get(`${url.URL}/main`,
-            { headers : { withCredentials: true } });
+        if(routineList.length === 0){
+            return res.status(200).send({ message: 'none data' })
+        }
 
-        const workoutList:Array<listType> = data.data.data;
+        const workoutList = await workList();
 
         let resultData:routineType = {title : routineList[0]['routines.title'], routineId : routineList[0]['routines.id'], workout :[]} 
 
@@ -72,9 +73,7 @@ const myRoutine: expressTemplate = async(req,res)=>{
             }
         })
 
-        return result.length === 0 ?
-            res.send({ message: 'none data' }) :
-            res.send({ data: result, message: 'ok' });
+        return res.status(200).send({ data: result, message: 'ok' });
     }
 
 

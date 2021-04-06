@@ -1,6 +1,6 @@
 import {expressTemplate} from '../../interfaces/users.interface';
 import {verify,sign} from "jsonwebtoken";
-import { users } from "../../models/users.model";
+import { users } from "../../models/index";
 const ACCESS_SECRET:string = process.env.ACCESS_SECRET
 const REFRESH_SECRET:string = process.env.REFRESH_SECRET
 

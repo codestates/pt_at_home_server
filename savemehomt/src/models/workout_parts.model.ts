@@ -1,4 +1,6 @@
-import {Sequelize, Model, DataTypes} from 'sequelize';
+import {Model, DataTypes} from 'sequelize';
+import { dbType } from '.';
+import {sequelize} from './sequelize';
 
 
 export class workout_parts extends Model{
@@ -10,22 +12,24 @@ export class workout_parts extends Model{
 }
 
 
-export default function (sequelize : Sequelize): typeof workout_parts {
-    workout_parts.init(
-        {
-            partId : {
-                type : DataTypes.INTEGER,
-            },
-            workoutId : {
-                type : DataTypes.INTEGER,
-            },
+workout_parts.init(
+    {
+        partId : {
+            type : DataTypes.INTEGER,
         },
-        {
-            modelName : 'workout_parts',
-            tableName : 'workout_parts',
-            sequelize
-        }
-    )
+        workoutId : {
+            type : DataTypes.INTEGER,
+        },
+    },
+    {
+        modelName : 'workout_parts',
+        tableName : 'workout_parts',
+        sequelize
+    }
+)
 
-    return workout_parts;
+
+export const associate = (db : dbType) => {
 }
+
+export default workout_parts

@@ -1,6 +1,6 @@
 import {expressTemplate} from '../../interfaces/users.interface';
 import { sign,verify } from "jsonwebtoken";
-import { users } from "../../models/users.model";
+import { users } from "../../models/index";
 import axios from "axios";
 import qs from 'qs';
 

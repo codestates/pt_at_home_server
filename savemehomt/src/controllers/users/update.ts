@@ -1,7 +1,7 @@
 import {expressTemplate} from '../../interfaces/users.interface';
 import { verify,sign } from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { users } from "../../models/users.model";
+import { users } from "../../models/index";
 
 require('dotenv').config();
 const ACCESS_SECRET:string = process.env.ACCESS_SECRET;

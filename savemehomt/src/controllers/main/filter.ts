@@ -2,12 +2,12 @@ import {expressTemplate} from '../../interfaces/users.interface';
 import axios from 'axios';
 import {url} from '../url';
 import {listType, reqType} from '../../interfaces/main.interface';
+import workList from '../helper';
 
 const filter: expressTemplate = async(req,res)=>{
 
     const { category, part, tool, path } : reqType = req.body
 
-    console.log(part);
     function getfilterData(data, list) {
         const filtering = list.filter(workout => {
             let filter:boolean = true;
@@ -72,7 +72,7 @@ const filter: expressTemplate = async(req,res)=>{
                 return true;
             })
             
-            if (category === "" && part.length === 0 && tool.length === 0) {
+            if (!category && part.length === 0 && tool.length === 0) {
                 return res.send({ data: list, message: 'ok' })
             }else if(filtering.length === 0){
                 return res.status(300).send({data : [], message : 'not found'});
@@ -84,13 +84,7 @@ const filter: expressTemplate = async(req,res)=>{
 
     if (path === 'dashboard') {
         try {
-            const dashboard = await axios.get(`${url.URL}/main`,
-                { headers: { withCredentials: true } });
-
-
-            const workoutList:Array<listType>= dashboard.data.data;
-
-            filter(workoutList);
+            filter(await workList());
         } catch (err) {
             return res.status(500).send({ message: 'server error' })
         }
