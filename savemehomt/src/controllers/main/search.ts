@@ -1,16 +1,11 @@
 import {expressTemplate} from '../../interfaces/users.interface';
-import axios from 'axios';
-import {url} from '../url';
 import {listType} from '../../interfaces/main.interface';
+import workList from '../helper';
 
 
 const search: expressTemplate = async(req,res)=>{
     const { keyword } : {keyword : string}= req.body;
-
-    const data = await axios.get(`${url.URL}/main`,
-        { headers: { withCredentials: true } });
-
-    const workoutList: Array<listType> = data.data.data;
+    const workoutList = await workList();
 
     try {
         const filterData: Array<listType> = workoutList.filter(workout => {

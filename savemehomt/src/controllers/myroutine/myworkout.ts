@@ -1,9 +1,8 @@
 import {expressTemplate} from '../../interfaces/users.interface';
 import { verify } from 'jsonwebtoken';
-import { users } from '../../models/users.model';
+import {users, user_workouts} from '../../models/index'
 import axios from 'axios';
 import {url} from '../url'
-import { user_workouts } from '../../models/user_workouts.model';
 import {userType} from '../../interfaces/myroutine.interface';
 import {listType} from '../../interfaces/main.interface'
 require('dotenv').config();

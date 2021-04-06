@@ -2,7 +2,7 @@ import {expressTemplate} from '../../interfaces/users.interface';
 
 import { verify, sign } from "jsonwebtoken";
 import axios from "axios";
-import { users } from '../../models/users.model';
+import { users } from '../../models/index';
 require('dotenv').config();
 const accessKey = process.env.ACCESS_SECRET;
 const refreshKey = process.env.REFRESH_SECRET;

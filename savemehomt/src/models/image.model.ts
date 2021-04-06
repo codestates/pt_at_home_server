@@ -1,4 +1,6 @@
 import {Sequelize, Model, DataTypes} from 'sequelize'; 
+import { dbType } from '.';
+import {sequelize} from './sequelize';
 
 export class images extends Model{
     public workoutId : number;
@@ -9,21 +11,23 @@ export class images extends Model{
 }
 
 
-export default function (sequelize : Sequelize): typeof images {
-    images.init(
-        {
-            workoutId : {
-                type : DataTypes.INTEGER,
-            },
-            url : {
-                type : DataTypes.TEXT,
-            },
+images.init(
+    {
+        workoutId : {
+            type : DataTypes.INTEGER,
         },
-        {
-            modelName : 'images',
-            tableName : 'images',
-            sequelize
-        }
-    )
-    return images;
+        url : {
+            type : DataTypes.TEXT,
+        },
+    },
+    {
+        modelName : 'images',
+        tableName : 'images',
+        sequelize
+    }
+)
+
+export const associate = (db : dbType) => {
 }
+
+export default images

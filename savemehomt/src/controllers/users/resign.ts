@@ -1,9 +1,11 @@
 import { verify } from 'jsonwebtoken';
 import {expressTemplate} from '../../interfaces/users.interface';
-import { routines } from '../../models/routines.model';
-import { routine_workouts } from '../../models/routine_workouts.model';
-import { users } from "../../models/users.model";
-import { user_workouts } from '../../models/user_workouts.model';
+import { 
+    routines, 
+    routine_workouts, 
+    users, 
+    user_workouts
+} from '../../models/index';
 
 const accessKey = process.env.ACCESS_SECRET;
 

@@ -1,6 +1,6 @@
 import {expressTemplate} from '../../interfaces/users.interface';
 import { verify, sign } from "jsonwebtoken";
-import { users } from "../../models/users.model";
+import { users } from "../../models/index";
 
 const ACCESS_SECRET:string = process.env.ACCESS_SECRET
 
@@ -11,7 +11,6 @@ const signout: expressTemplate = async(req,res)=>{
         const token = req.headers.authorization.substr(7);
         try {
             const tokenVerify:any = verify(token, ACCESS_SECRET);
-            console.log(tokenVerify)
             let userInfo = await users.findOne({
                 where: { email: tokenVerify.email }
             })

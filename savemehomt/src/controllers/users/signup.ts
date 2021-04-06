@@ -1,7 +1,7 @@
 import {expressTemplate, userType} from '../../interfaces/users.interface';
 import bcrypt from "bcrypt";
 import { sign, verify } from "jsonwebtoken";
-import { users } from "../../models/users.model";
+import { users } from "../../models/index";
 import { signType } from '../../interfaces/users.interface'
 require('dotenv').config();
 

@@ -2,7 +2,7 @@ import {expressTemplate} from '../../interfaces/users.interface';
 import qs from "qs";
 import {verify, sign} from "jsonwebtoken";
 import axios from "axios";
-import { users } from '../../models/users.model';
+import { users } from '../../models/index';
 require('dotenv').config();
 const ACCESS_SECRET = process.env.ACCESS_SECRET
 const REFRESH_SECRET = process.env.REFRESH_SECRET
@@ -72,7 +72,6 @@ const google: expressTemplate = async(req,res)=>{
                 message: 'auth success'
             })
     } catch (err) {
-        console.log(err)
         res.status(500).send({ message: 'server error' })
     }
 }

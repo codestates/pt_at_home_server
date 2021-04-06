@@ -1,6 +1,5 @@
 import {expressTemplate} from '../../interfaces/users.interface';
-import { routines } from "../../models/routines.model";
-import { routine_workouts } from "../../models/routine_workouts.model";
+import { routines, routine_workouts} from '../../models/index';
 import { url } from "../url";
 
 const deleteRoutine: expressTemplate = async(req,res)=>{

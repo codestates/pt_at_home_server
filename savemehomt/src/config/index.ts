@@ -1,29 +1,51 @@
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+import { Dialect } from 'sequelize/types';
+dotenv.config();
 
-const DATABASE_SECRET = process.env.DATABASE_SECRET
-
-const dbConfig = {
-  development: {
-    username: 'savemehome',
-    password: DATABASE_SECRET,
-    database: 'ptathome',
-    host: 'databaseptathome.caigvf4pbegf.ap-northeast-2.rds.amazonaws.com',
-    dialect: 'mysql',
-  },
-  test: {
-    username: 'root',
-    password: 'password',
-    database: 'sequelize',
-    host: 'localhost',
-    dialect: 'mysql',
-  },
-  production: {
-    username: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    host: process.env.MYSQL_HOST,
-    dialect: 'mysql',
-  },
+type Config = {
+  username : string,
+  password : string,
+  port : any,
+  database : string,
+  host : string,
+  dialect : Dialect,
+  timezone : string
 };
 
-export default dbConfig;
+interface IConfigGroup {
+  development : Config,
+  test : Config,
+  production : Config
+};
+
+const config : IConfigGroup = {
+  development: {
+    username: 'root',
+    password: process.env.DB_DEV_PASSWORD!,
+    port : '3306',
+    database: 'ptathome',
+    host: '127.0.0.1',
+    dialect: 'mariadb',
+    timezone: '+09:00',
+  },
+  test: {
+    username: process.env.DB_USER!,
+    password: process.env.DB_PASSWORD!,
+    port : process.env.DB_PORT,
+    database: 'ptathome',
+    host: '127.0.0.1',
+    dialect: 'mariadb',
+    timezone: '+09:00',
+  },
+  production: {
+    username: process.env.DB_USER!,
+    password: process.env.DB_PASSWORD!,
+    port : process.env.DB_PORT,
+    database: 'ptathome',
+    host: 'savemehomtdb.caigvf4pbegf.ap-northeast-2.rds.amazonaws.com',
+    dialect: 'mysql',
+    timezone: '+09:00',
+  }
+};
+
+export default config;
